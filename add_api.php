@@ -32,6 +32,11 @@ if ( !empty($_GET['custom_api']) ) {
      */
     if ( @$_POST['custom_command'] == 'get_crypto_addr' ) {
 
+        if ( empty($_POST['currency']) ) {
+            echo generate_answer(0, 'currency is empty' , '', 'ERROR_EMPTY_CURRENCY');
+            exit;
+        }
+
         // Getting address from DB first
         $make_post_request = false;
 		$res = $user_obj->get_request_to_add_funds(
