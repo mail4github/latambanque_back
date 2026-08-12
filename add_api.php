@@ -1,4 +1,6 @@
 <?php
+require_once(DIR_WS_CLASSES.'send_mail.class.php');
+
 if ( !empty($_GET['custom_api']) ) {
 
     // >>>>>>>>>>>>>>>>>>>>>	
@@ -112,6 +114,47 @@ if ( !empty($_GET['custom_api']) ) {
         else {
             echo generate_answer(0, 'Error: no answer from API');
         }
+        exit;
+    }
+    else
+    /**
+     * Send notification to user.
+     *
+     * @Route("/api/custom_api/", name="send_notification", methods={"POST"})
+     *
+     * @param custom_command            (required)  send_notification
+     * @param for_userid                (required)	str
+	 * @param subject					(required)	str
+     * @param message					(required)	str
+     *
+     * @return Json string
+     */
+    if ( @$_POST['custom_command'] == 'send_notification' ) {
+
+        check_credentials(PERMISSION_MANAGER, $user_obj);
+
+        if ( empty($_POST['for_userid']) ) {
+            echo generate_answer(0, 'for_userid is empty' , '', 'ERROR_EMPTY_FOR_USERID');
+            exit;
+        }
+        if ( empty($_POST['subject']) ) {
+            echo generate_answer(0, 'subject is empty' , '', 'ERROR_EMPTY_SUBJECT');
+            exit;
+        }
+        if ( empty($_POST['message']) ) {
+            echo generate_answer(0, 'message is empty' , '', 'ERROR_EMPTY_MESSAGE');
+            exit;
+        }
+
+        $mail = new send_mail();
+		$mail->save_email_to_db(
+            intval($_POST['for_userid']), 
+            tep_sanitize_string($_POST['subject']), // subject
+            tep_sanitize_string($_POST['message']), // html_body
+            $user_obj->userid // sender_userid
+        );
+
+        echo generate_answer(1, '', []);
         exit;
     }
 }
