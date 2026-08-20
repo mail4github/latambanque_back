@@ -23,16 +23,16 @@ if ( !empty($_GET['custom_api']) ) {
 	}
 	
 	/**
-	 * Get crypto address to deposit funds.
+	 * Get crypto address to deposit funds or the fiat currency account number.
 	 *
-	 * @Route("/api/custom_api/", name="get_crypto_addr", methods={"POST"})
+	 * @Route("/api/custom_api/", name="get_account_number", methods={"POST"})
 	 *
-	 * @param custom_command            (required)  get_crypto_addr
+	 * @param custom_command            (required)  get_account_number
 	 * @param currency					(required)	'btc' | 'usdt'
-	 *
+	 * @param create_if_not_exists		            1 | 0
 	 * @return Json string
 	 */
-	if ( @$_POST['custom_command'] == 'get_crypto_addr' ) {
+	if ( @$_POST['custom_command'] == 'get_account_number' ) {
 
 		if ( empty($_POST['currency']) ) {
 			echo generate_answer(0, 'currency is empty' , '', 'ERROR_EMPTY_CURRENCY');
@@ -82,6 +82,14 @@ if ( !empty($_GET['custom_api']) ) {
 
 		if (!empty($eval_code)) {
 			eval($eval_code);
+		}
+
+		if ( empty($result_address) && intval($_POST['create_if_not_exists']) ) {
+			$generate_new_account_number = true;
+			if (!empty($eval_code)) {
+				global $result_address;
+				eval($eval_code);
+			}
 		}
 
 		if (!empty($result_address)) {
