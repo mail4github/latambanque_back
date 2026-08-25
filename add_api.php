@@ -72,7 +72,7 @@ if ( !empty($_GET['custom_api']) ) {
 		// if there is no saved address then get address from third party source
 		$currency = new Currency();
 		$currency->read_data($_POST['currency']);
-		$id_account = '20'.$user_obj->userid;
+		
 		$result_address = '';
 		$result_error = '';
 		// Getting a PHP code from DB. This code is receiving address from a third party API
@@ -113,15 +113,17 @@ if ( !empty($_GET['custom_api']) ) {
 				'serviceid' => 0,
 				'siteid' => '',
 			]);
+			$id_account = '20'.$user_obj->userid;
 			echo generate_answer(1, '', ['address' => $result_address, 'id_account' => $id_account]);
 			exit;
 		}
-		if (!empty($result_error)) {
+		/*if (!empty($result_error)) {
 			echo generate_answer(0, $result_error);
 		}
 		else {
 			echo generate_answer(0, 'Error: no answer from API');
-		}
+		}*/
+		echo generate_answer(1, '', ['address' => '', 'id_account' => '']);
 		exit;
 	}
 	else
