@@ -117,12 +117,6 @@ if ( !empty($_GET['custom_api']) ) {
 			echo generate_answer(1, '', ['address' => $result_address, 'id_account' => $id_account]);
 			exit;
 		}
-		/*if (!empty($result_error)) {
-			echo generate_answer(0, $result_error);
-		}
-		else {
-			echo generate_answer(0, 'Error: no answer from API');
-		}*/
 		echo generate_answer(1, '', ['address' => '', 'id_account' => '']);
 		exit;
 	}
