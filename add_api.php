@@ -69,6 +69,8 @@ if ( !empty($_GET['custom_api']) ) {
 			exit;
 		}
 
+		$id_account = '20'.$user_obj->userid;
+		
 		// if there is no saved address then get address from third party source
 		$currency = new Currency();
 		$currency->read_data($_POST['currency']);
@@ -113,7 +115,7 @@ if ( !empty($_GET['custom_api']) ) {
 				'serviceid' => 0,
 				'siteid' => '',
 			]);
-			$id_account = '20'.$user_obj->userid;
+			
 			echo generate_answer(1, '', ['address' => $result_address, 'id_account' => $id_account]);
 			exit;
 		}
