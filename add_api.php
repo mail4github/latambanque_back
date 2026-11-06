@@ -1,6 +1,16 @@
 <?php
 require_once(DIR_WS_CLASSES.'send_mail.class.php');
 
+global $ranks;
+$ranks = array(
+	array('name' => 'newbie',    'sell_shares' => 1, 'cashout' => 39,  'min_cashout' => 1, 'max_cashout' => 1000000, 'feedbacks' => 0, 'expert_job' => 0, 'arbitr' => 0, 'upgrade' => 00.00, 'ransom' => 1, 'referrals_off' => 0, 'traffic_off' => 0, 'PTC_bonus' => 0, 'withdrawal_fee' => WITHDRAWAL_FEE * 6, 'max_number_of_jobs' => 5, 'buy_from_balance' => 0, 'can_buy_shares' => 1, 'pay_for_clicks' => 1),
+	array('name' => 'amateur',   'sell_shares' => 1, 'cashout' => 5,   'min_cashout' => 1, 'max_cashout' => 1000000, 'feedbacks' => 1, 'expert_job' => 0, 'arbitr' => 0, 'upgrade' => 5.99, 'ransom' => 1, 'referrals_off' => 0, 'traffic_off' => 0, 'PTC_bonus' => 0, 'withdrawal_fee' => WITHDRAWAL_FEE * 5, 'max_number_of_jobs' => 10, 'buy_from_balance' => 0, 'can_buy_shares' => 1, 'pay_for_clicks' => 1),
+	array('name' => 'investor',  'sell_shares' => 1, 'cashout' => 3,   'min_cashout' => 1, 'max_cashout' => 1000000, 'feedbacks' => 1, 'expert_job' => 0, 'arbitr' => 0, 'upgrade' => 9.99, 'ransom' => 1, 'referrals_off' => 0.05, 'traffic_off' => 0.05, 'PTC_bonus' => 0, 'withdrawal_fee' => WITHDRAWAL_FEE * 4, 'max_number_of_jobs' => 15, 'buy_from_balance' => 1, 'can_buy_shares' => 1, 'pay_for_clicks' => 1),
+	array('name' => 'broker',    'sell_shares' => 1, 'cashout' => 1,   'min_cashout' => 1, 'max_cashout' => 1000000, 'feedbacks' => 1, 'expert_job' => 1, 'arbitr' => 0, 'upgrade' => 19.99, 'ransom' => 1, 'referrals_off' => 0.10, 'traffic_off' => 0.10, 'PTC_bonus' => 0, 'withdrawal_fee' => WITHDRAWAL_FEE * 3, 'max_number_of_jobs' => 20, 'buy_from_balance' => 1, 'can_buy_shares' => 1, 'pay_for_clicks' => 0),
+	array('name' => 'manager',   'sell_shares' => 1, 'cashout' => 1,   'min_cashout' => 1, 'max_cashout' => 1000000, 'feedbacks' => 1, 'expert_job' => 1, 'arbitr' => 1, 'upgrade' => 29.99, 'ransom' => 1, 'referrals_off' => 0.15, 'traffic_off' => 0.20, 'PTC_bonus' => 0, 'withdrawal_fee' => WITHDRAWAL_FEE * 2, 'max_number_of_jobs' => 25, 'buy_from_balance' => 1, 'can_buy_shares' => 1, 'pay_for_clicks' => 0),
+	array('name' => 'master',    'sell_shares' => 1, 'cashout' => 0.1, 'min_cashout' => 1, 'max_cashout' => 1000000, 'feedbacks' => 1, 'expert_job' => 1, 'arbitr' => 1, 'upgrade' => 39.99, 'ransom' => 1, 'referrals_off' => 0.20, 'traffic_off' => 0.30, 'PTC_bonus' => 0, 'withdrawal_fee' => WITHDRAWAL_FEE, 'max_number_of_jobs' => 30, 'buy_from_balance' => 1, 'can_buy_shares' => 1, 'pay_for_clicks' => 0),
+);
+
 if ( !empty($_GET['custom_api']) ) {
 
 	// >>>>>>>>>>>>>>>>>>>>>	
