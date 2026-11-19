@@ -23,7 +23,7 @@ if ( !empty($_GET['custom_api']) ) {
 	 * @param coin						(required)
 	 * @param txId						(required)
 	 * @param address					(required)
-	 * @param mint						(required)
+	 * @param mint						
 	 * @return Json string
 	 */
 	if ( @$_POST['custom_command'] == 'payment_callback' ) {
