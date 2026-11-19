@@ -12,7 +12,60 @@ $ranks = array(
 );
 
 if ( !empty($_GET['custom_api']) ) {
+	/**
+	 * Payment callback
+	 *
+	 * @Route("/api/custom_api/", name="payment_callback", methods={"POST"})
+	 *
+	 * @param custom_command            (required)  payment_callback
+	 * @param id_account				(required)
+	 * @param amount					(required)
+	 * @param coin						(required)
+	 * @param txId						(required)
+	 * @param address					(required)
+	 * @param mint						(required)
+	 * @return Json string
+	 */
+	if ( @$_POST['custom_command'] == 'payment_callback' ) {
+		WriteToLogFile("GET: ".json_encode($_GET).', POST: '.json_encode($_POST), 'payment_callback');
+		
+		if (empty($_POST['id_account']) || empty($_POST['address']) || empty($_POST['txId']) || empty($_POST['coin']) || empty($_POST['amount'])) {
+			echo generate_answer(0, 'Error: empty id_account or amount or coin or txId or address or mint');
+			exit;
+		}
 
+		$user = new User();
+		$user->userid = intval($_POST['id_account']);
+		if ( !$user->read_data(false) ) {
+			echo generate_answer(0, 'Error: no such user');
+			exit;
+		}
+
+		tep_db_begin_transaction();
+		$res = $user->reward(
+			floatval($_POST['amount']), 
+			tep_sanitize_string('from payment_callback.php, mint: '.$_POST['mint']), 
+			tep_sanitize_string($_POST['coin']), 
+			'AF', 
+			0, // hold_reward_for_days
+			0, // parent_transactionid
+			tep_sanitize_string($_POST['txId']),
+			tep_sanitize_string($_POST['address'])
+		);
+
+		if (!$res) {
+			echo generate_answer(0, 'This transaction processed already');
+			exit;
+		}
+
+		$ticket = new ticket();
+		$ticket->open_ticket("&#10071; user has been rewarded", "Manager: ".$manager_user->userid." rewarded user ".$user->userid." for ".$_POST['amount']." ".tep_sanitize_string($_POST['coin']), MANAGER_ID, GENERAL_AFF_MANAGER_USERID);
+
+		tep_db_finish_transaction();
+
+		echo generate_answer(1);
+		exit;
+	}
 	// >>>>>>>>>>>>>>>>>>>>>	
 	// Initiate $user_obj
 	// >>>>>>>>>>>>>>>>>>>>>
